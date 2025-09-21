@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$USDARK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Canvas for the chart */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            aspect-ratio: auto 1036 / 826;
+            overflow-clip-margin: content-box;
+            overflow: clip;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo circle */
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff1744, #d50000);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-chart {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Title */
+        .title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ff1744;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 8px;
+        }
+
+        .chain-badge {
+            display: inline-block;
+            background: #ff1744;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: #aaaaaa;
+            margin-bottom: 40px;
+        }
+
+        /* Supply info */
+        .supply-info {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff1744;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 23, 68, 0.1);
+            border-radius: 8px;
+            border: 1px solid #ff1744;
+        }
+
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #2563eb;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* Contract info box */
+        .contract-box {
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contract-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .contract-address {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444444;
+            border-radius: 6px;
+            padding: 12px;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .contract-soon {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff1744;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: #cccccc;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .container { padding: 40px 15px; }
+            .nav-buttons { flex-direction: column; align-items: center; }
+            .nav-btn { width: 200px; }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .action-btn { width: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas for animated chart -->
+    <canvas id="chartCanvas"></canvas>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-circle">
+            <div class="logo-chart">📉</div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">$USDARK</h1>
+        <div class="subtitle">first ever unstable coin</div>
+        <div class="chain-badge">NOW ON SOLANA</div>
+        
+        <!-- Tagline -->
+        <div class="tagline">u can't get rich by holding stablecoins</div>
+
+        <!-- Supply Info -->
+        <div class="supply-info">
+            Total Supply: 1,000,000,000 USDARK
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="nav-buttons">
+            <a href="#" class="nav-btn">𝕏 Community</a>
+            <a href="#" class="nav-btn">𝕏 Account</a>
+            <a href="#" class="nav-btn">Chart</a>
+            <a href="#" class="nav-btn">CoinMarketCap</a>
+        </div>
+
+        <!-- Contract info -->
+        <div class="contract-box">
+            <div class="contract-label">SOL CA:</div>
+            <div class="contract-address">
+                <div class="contract-soon">SOON</div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn" disabled>Copy</button>
+                <button class="action-btn" disabled>Buy on jup.ag</button>
+            </div>
+        </div>
+
+        <!-- Info boxes -->
+        <div class="info-box">
+            unstable coin, u buy it before u go to sleep and don't know if'll be millionaire or hobo by the time u wake up.
+        </div>
+
+        <div class="info-box">
+            <strong>high Volatility!!!</strong>
+        </div>
+
+        <div class="info-box">
+            made for unstable people.
+        </div>
+
+        <div class="info-box">
+            <strong>Get dark or die trying.</strong>
+        </div>
+    </div>
+
+    <script>
+        // Canvas chart animation
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Chart data points
+        let chartPoints = [];
+        let currentX = 0;
+        const pointSpacing = 2;
+        const maxPoints = Math.floor(canvas.width / pointSpacing) + 100;
+        let frameCount = 0;
+
+        // Initialize starting point at center
+        let lastY = canvas.height * 0.5; // Start at center (50% from top)
+
+        // Generate new point (medium speed)
+        function generateNewPoint() {
+            // Only add new point every 4 frames for medium speed
+            frameCount++;
+            if (frameCount % 4 !== 0) return;
+            
+            currentX += pointSpacing;
+            
+            // Create volatility - random walk with trend changes
+            const volatility = 35;
+            const trend = Math.sin(currentX * 0.008) * 18; // Trend changes
+            const randomChange = (Math.random() - 0.5) * volatility;
+            
+            lastY += randomChange + trend * 0.08;
+            
+            // Keep within larger area bounds (20% to 80% of screen height)
+            const minY = canvas.height * 0.2;
+            const maxY = canvas.height * 0.8;
+            lastY = Math.max(minY, Math.min(maxY, lastY));
+            
+            chartPoints.push({ x: currentX, y: lastY });
+            
+            // Remove old points
+            if (chartPoints.length > maxPoints) {
+                chartPoints.shift();
+                // Adjust x positions
+                chartPoints.forEach(point => {
+                    point.x -= pointSpacing;
+                });
+                currentX -= pointSpacing;
+            }
+        }
+
+        // Draw chart
+        function drawChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (chartPoints.length < 2) return;
+            
+            // Draw the line
+            ctx.strokeStyle = '#ff1744';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Add glow effect
+            ctx.shadowColor = '#ff1744';
+            ctx.shadowBlur = 10;
+            
+            ctx.beginPath();
+            ctx.moveTo(chartPoints[0].x, chartPoints[0].y);
+            
+            for (let i = 1; i < chartPoints.length; i++) {
+                ctx.lineTo(chartPoints[i].x, chartPoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Draw fill area
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'rgba(255, 23, 68, 0.1)';
+            ctx.beginPath();
+            ctx.moveTo(chartPoints[0].x, chartPoints[0].y);
+            
+            for (let i = 1; i < chartPoints.length; i++) {
+                ctx.lineTo(chartPoints[i].x, chartPoints[i].y);
+            }
+            
+            ctx.lineTo(chartPoints[chartPoints.length - 1].x, canvas.height);
+            ctx.lineTo(chartPoints[0].x, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Animation loop
+        function animate() {
+            generateNewPoint();
+            drawChart();
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        setTimeout(() => {
+            animate();
+        }, 100);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            // Reset chart points for new size
+            chartPoints = [];
+            currentX = 0;
+            lastY = canvas.height * 0.5; // Reset to center
+            frameCount = 0;
+        });
+    </script>
+</body>
+</html>
