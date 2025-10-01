@@ -387,7 +387,6 @@
             
             <div class="action-buttons">
                 <button class="action-btn" disabled>Copy</button>
-                <!-- <button class="action-btn" disabled>Start Trade</button> -->
             </div>
         </div>
 
@@ -593,6 +592,23 @@
             currentX = 0;
             lastY = canvas.height * 0.5; // Reset to center
             frameCount = 0;
+        });
+
+
+        // Add click event listener to the button
+        document.querySelector('.action-btn').addEventListener('click', function() {
+            // Get the text to copy
+            const textToCopy = document.querySelector('.contract-soon').innerText;
+            
+            // Use the Clipboard API to copy the text
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    alert('Text copied to clipboard!'); // Optional feedback
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy text. Please try selecting and copying manually.');
+                });
         });
     </script>
 </body>
