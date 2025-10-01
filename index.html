@@ -125,17 +125,33 @@
             color: #333333;
             margin-bottom: 8px;
         }
+        .hero_container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
         .chain-badge {
             display: inline-block;
-            background: linear-gradient(45deg, #000000, #000000);
+            background: linear-gradient(45deg, #000000, #333333);
             color: white;
             padding: 6px 12px;
-            border-radius: 4px;
+            border-radius: 15px;
             font-size: 0.8rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 6px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            animation: badge-flicker 1.5s infinite;
+        }
+
+        .chain-btn{
+            background: linear-gradient(45deg, #000000, #333333);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+
+            text-decoration: none;
         }
 
         @keyframes badge-flicker {
@@ -342,11 +358,13 @@
 
         <!-- Title -->
         <h1 class="title">$USDARK</h1>
-        <div class="subtitle">Trade spot/perp with USDARK-DEX</div>
-        <a href="https://dexusdark.netlify.app/"><div class="chain-badge">START</div></a>
-        
+        <div class="subtitle">first ever unstable dark coin</div>
+        <div class="hero_container">
+        <div class="chain-badge">Trade spot/perp with USDARK-DEX</div>
+        <a href="https://dexusdark.netlify.app/" class="chain-btn">START</a>
+        </div>
         <!-- Tagline -->
-        <div class="tagline">first ever unstable dark coin</div>
+        <div class="tagline">u can't get rich by holding stablecoins</div>
 
         <!-- Supply Info -->
         <div class="supply-info">
