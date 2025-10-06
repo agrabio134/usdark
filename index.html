@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
     <title>$USDARK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -293,6 +294,67 @@
             cursor: not-allowed;
         }
 
+        /* Download button styling (reusing nav-btn style for consistency) */
+        .download-btn {
+            background: linear-gradient(45deg, #000000ea, #000000ea);
+            border: none;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px #dadada;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .download-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(45deg, #000000ea, #000000ea);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px #dadada;
+        }
+
+        .download-btn.disabled,
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: #333333;
+        }
+
+        .download-btn.disabled::before,
+        .download-btn:disabled::before {
+            display: none;
+        }
+
+        .download-btn.disabled:hover,
+        .download-btn:disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 15px #dadada;
+        }
+
         /* Info boxes */
         .info-box {
             background: #dadada;
@@ -336,6 +398,151 @@
             font-weight: bold;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #dadada;
+            margin: 5% auto;
+            padding: 0;
+            border: 2px solid #000000ea;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-header {
+            background: linear-gradient(45deg, #000000, #333333);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #000000ea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.05);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+        }
+
+        .guide-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .guide-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guide-steps li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .guide-steps li i {
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #000000;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            color: #333333;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+
+        .proceed-btn {
+            background: linear-gradient(45deg, #000000, #333333);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .proceed-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .proceed-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .title { font-size: 2.5rem; }
@@ -344,6 +551,17 @@
             .nav-btn { width: 140px; }
             .action-buttons { flex-direction: column; align-items: center; }
             .action-btn { width: 140px; }
+            .download-section { flex-direction: column; align-items: center; }
+            .modal-content { width: 95%; margin: 10% auto; }
+            .modal-footer { flex-direction: column; gap: 10px; }
+        }
+
+        .download-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -380,6 +598,12 @@
             <a href="https://usdark-scan.app" class="nav-btn">USDARK-SCAN</a>
         </div>
 
+        <!-- Download section -->
+        <div class="download-section">
+            <button class="download-btn" onclick="if(downloadButtonClickable === 1) openModal(); else return false;"><i class="fas fa-download"></i> Download USDARK AI APK</button>
+            <a href="https://ai.usdark.app" class="download-btn" onclick="return agentButtonClickable === 1;"><i class="fas fa-robot"></i> USDARK AGENT</a>
+        </div>
+
         <!-- Contract info -->
         <div class="contract-box">
             <div class="contract-label">SOL CA:</div>
@@ -414,7 +638,89 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <i class="fas fa-mobile-alt"></i> USDARK AI APK Installation Guide
+            </div>
+            <div class="modal-body">
+                <div class="guide-title">
+                    <i class="fas fa-info-circle"></i> Step-by-Step Guide
+                </div>
+                <ol class="guide-steps">
+                    <li><i class="fas fa-cog"></i> Go to your device Settings > Security (or Apps & notifications > Special app access > Install unknown apps) and enable "Unknown sources" or allow installation from your browser.</li>
+                    <li><i class="fas fa-download"></i> Confirm the download below.</li>
+                    <li><i class="fas fa-folder-open"></i> Once downloaded, open the file manager, locate the APK file (usually in Downloads), and tap to install.</li>
+                    <li><i class="fas fa-check-circle"></i> Follow the on-screen prompts to complete installation. You may need to grant permissions.</li>
+                    <li><i class="fas fa-exclamation-triangle"></i> <span class="warning-text">⚠️ Only download from trusted sources. This APK is for USDARK AI – proceed at your own risk!</span></li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" onchange="toggleProceedBtn()">
+                    <label for="terms">I agree to the terms and conditions and understand the risks.</label>
+                </div>
+                <button id="proceedBtn" class="proceed-btn" disabled onclick="startDownload()">Proceed to Download</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Top variables
+        let downloadButtonClickable = 0;
+        let agentButtonClickable = 0;
+
+        // Disable buttons if not clickable
+        const dlBtn = document.querySelector('button[onclick*="openModal"]');
+        if (downloadButtonClickable !== 1) {
+            dlBtn.disabled = true;
+            dlBtn.classList.add('disabled');
+        }
+
+        const agentBtn = document.querySelector('a[href="https://ai.usdark.app"]');
+        if (agentButtonClickable !== 1) {
+            agentBtn.classList.add('disabled');
+            agentBtn.title = 'Coming Soon';
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('downloadModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('downloadModal').style.display = 'none';
+        }
+
+        function toggleProceedBtn() {
+            const checkbox = document.getElementById('terms');
+            const btn = document.getElementById('proceedBtn');
+            btn.disabled = !checkbox.checked;
+        }
+
+        function startDownload() {
+            // Close modal
+            closeModal();
+            // Create temporary link for download
+            const link = document.createElement('a');
+            link.href = '/usdark-ai.apk';
+            link.download = 'usdark-ai.apk';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('Download started! Follow the guide to install safely.');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('downloadModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
         // Canvas chart animation
         const canvas = document.getElementById('chartCanvas');
         const ctx = canvas.getContext('2d');
