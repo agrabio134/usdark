@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +34,20 @@
         }
 
         @keyframes float-dark {
-            0% { 
+            0% {
                 transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
             }
-            10% { opacity: 1; }
-            90% { opacity: 0.8; }
-            100% { 
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
                 transform: translateY(-100px) rotate(360deg);
                 opacity: 0;
             }
@@ -72,11 +80,14 @@
         }
 
         @keyframes logo-pulse {
-            0%, 100% { 
+
+            0%,
+            100% {
                 box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
                 transform: scale(1);
             }
-            50% { 
+
+            50% {
                 box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
                 transform: scale(1.05);
             }
@@ -96,7 +107,7 @@
             color: #000000;
             margin-bottom: 10px;
             letter-spacing: 2px;
-            text-shadow: 
+            text-shadow:
                 0 0 10px #939393,
                 0 0 20px #939393,
                 0 0 30px #939393;
@@ -104,14 +115,15 @@
         }
 
         @keyframes title-glow {
-            0% { 
-                text-shadow: 
+            0% {
+                text-shadow:
                     0 0 10px #939393,
                     0 0 20px #939393,
                     0 0 30px #939393;
             }
-            100% { 
-                text-shadow: 
+
+            100% {
+                text-shadow:
                     0 0 15px #939393,
                     0 0 25px #939393,
                     0 0 35px #939393;
@@ -152,8 +164,17 @@
         }
 
         @keyframes badge-flicker {
-            0%, 90%, 100% { opacity: 1; }
-            5%, 85% { opacity: 0.8; }
+
+            0%,
+            90%,
+            100% {
+                opacity: 1;
+            }
+
+            5%,
+            85% {
+                opacity: 0.8;
+            }
         }
 
         .tagline {
@@ -397,7 +418,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             animation: fadeIn 0.3s;
         }
 
@@ -411,7 +432,7 @@
             max-width: 500px;
             height: 90%;
             max-height: 600px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
@@ -422,7 +443,7 @@
             border-bottom: 1px solid #000000ea;
             display: flex;
             justify-content: space-between;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
         }
 
         .modal-body {
@@ -464,7 +485,7 @@
 
         .proceed-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .floating-chat {
@@ -480,7 +501,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             z-index: 1000;
             transition: transform 0.3s ease;
         }
@@ -490,20 +511,45 @@
         }
 
         @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .container { padding: 40px 15px; }
-            .nav-btn { width: 140px; }
-            .action-buttons { flex-direction: column; align-items: center; }
-            .action-btn { width: 140px; }
-            .download-section { flex-direction: column; align-items: center; }
-            .modal-content { 
-                width: 95%; 
-                margin: 5% auto; 
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .nav-btn {
+                width: 140px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 140px;
+            }
+
+            .download-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
                 height: 90vh;
                 max-height: none;
             }
@@ -518,6 +564,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Canvas for animated chart -->
     <canvas id="chartCanvas"></canvas>
@@ -547,10 +594,12 @@
         <div class="nav-buttons">
             <a href="https://x.com/i/communities/1973064199522627940" class="nav-btn">𝕏 Community</a>
             <a href="https://x.com/usdark_dex" class="nav-btn">𝕏 Account</a>
-            <a href="https://dexscreener.com/solana/4EKDKWJDrqrCQtAD6j9sM5diTeZiKBepkEB8GLP9Dark" class="nav-btn">Chart</a>
+            <a href="https://dexscreener.com/solana/4EKDKWJDrqrCQtAD6j9sM5diTeZiKBepkEB8GLP9Dark"
+                class="nav-btn">Chart</a>
             <a href="https://usdark-scan.app" class="nav-btn">USDARK-SCAN</a>
-            
-                        <a href="https://ai.usdark.app" class="download-btn" ><i class="fas fa-robot"></i> USDARK AGENT</a>
+            <a href="#" class="download-btn"> <i class="fas fa-rocket"></i> USDARK-PAD</a>
+
+            <a href="https://ai.usdark.app" class="download-btn"><i class="fas fa-robot"></i> USDARK AGENT</a>
 
         </div>
 
@@ -564,7 +613,7 @@
             <div class="contract-address">
                 <div class="contract-soon">4EKDKWJDrqrCQtAD6j9sM5diTeZiKBepkEB8GLP9Dark</div>
             </div>
-            
+
             <div class="action-buttons">
                 <button class="action-btn">Copy</button>
             </div>
@@ -572,7 +621,8 @@
 
         <!-- Info boxes -->
         <div class="info-box">
-            unstable dark coin, u buy it before u go to sleep and don't know if'll be millionaire or hobo by the time u wake up.
+            unstable dark coin, u buy it before u go to sleep and don't know if'll be millionaire or hobo by the time u
+            wake up.
         </div>
 
         <div class="info-box">
@@ -601,7 +651,8 @@
     <div id="ai-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <button class="proceed-btn" onclick="window.location.href='https://ai.usdark.app'">Visit AI Chat</button>
+                <button class="proceed-btn" onclick="window.location.href='https://ai.usdark.app'">Visit AI
+                    Chat</button>
                 <span class="close">&times;</span>
             </div>
             <div class="modal-body">
@@ -635,7 +686,7 @@
         });
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target === aiModal) {
                 aiModal.style.display = 'none';
             }
@@ -667,21 +718,21 @@
         function generateNewPoint() {
             frameCount++;
             if (frameCount % 4 !== 0) return;
-            
+
             currentX += pointSpacing;
-            
+
             const volatility = 35;
             const trend = Math.sin(currentX * 0.008) * 18;
             const randomChange = (Math.random() - 0.5) * volatility;
-            
+
             lastY += randomChange + trend * 0.08;
-            
+
             const minY = canvas.height * 0.2;
             const maxY = canvas.height * 0.8;
             lastY = Math.max(minY, Math.min(maxY, lastY));
-            
+
             chartPoints.push({ x: currentX, y: lastY });
-            
+
             if (chartPoints.length > maxPoints) {
                 chartPoints.shift();
                 chartPoints.forEach(point => {
@@ -694,35 +745,35 @@
         // Draw chart
         function drawChart() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             if (chartPoints.length < 2) return;
-            
+
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
-            
+
             ctx.shadowColor = '#000000';
             ctx.shadowBlur = 10;
-            
+
             ctx.beginPath();
             ctx.moveTo(chartPoints[0].x, chartPoints[0].y);
-            
+
             for (let i = 1; i < chartPoints.length; i++) {
                 ctx.lineTo(chartPoints[i].x, chartPoints[i].y);
             }
-            
+
             ctx.stroke();
-            
+
             ctx.shadowBlur = 0;
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.beginPath();
             ctx.moveTo(chartPoints[0].x, chartPoints[0].y);
-            
+
             for (let i = 1; i < chartPoints.length; i++) {
                 ctx.lineTo(chartPoints[i].x, chartPoints[i].y);
             }
-            
+
             ctx.lineTo(chartPoints[chartPoints.length - 1].x, canvas.height);
             ctx.lineTo(chartPoints[0].x, canvas.height);
             ctx.closePath();
@@ -761,7 +812,7 @@
 
             setInterval(createParticle, 3000);
 
-            for(let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 setTimeout(createParticle, i * 1000);
             }
         }
@@ -812,7 +863,7 @@
         });
 
         // Add click event listener to the button
-        document.querySelector('.action-btn').addEventListener('click', function() {
+        document.querySelector('.action-btn').addEventListener('click', function () {
             const textToCopy = document.querySelector('.contract-soon').innerText;
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
@@ -825,4 +876,5 @@
         });
     </script>
 </body>
+
 </html>
