@@ -63,6 +63,7 @@
             aspect-ratio: auto 1036 / 826;
             overflow-clip-margin: content-box;
             overflow: clip;
+            display: none;
         }
 
         .container {
@@ -630,6 +631,127 @@
             flex-wrap: wrap;
         }
 
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            text-align: center;
+            position: relative;
+        }
+
+        #loading-number {
+            font-size: 4rem;
+            color: #000000;
+            text-shadow: 0 0 10px #939393;
+            animation: glow 1s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #939393;
+            }
+
+            100% {
+                text-shadow: 0 0 20px #939393;
+            }
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(45deg, #000000, #333333);
+            transition: width 0.1s ease;
+        }
+
+        .loading-text {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 1.2rem;
+            pointer-events: none;
+            animation: fade-text 3s ease-in-out;
+            white-space: nowrap;
+        }
+
+        @keyframes fade-text {
+            0% { opacity: 0; transform: translateY(20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Splash Screen Styles */
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+
+        #splash .logo-circle {
+            animation: none;
+            box-shadow: none;
+            border: none;
+            animation: logo-effect 2s infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes logo-effect {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        #splash .title {
+            margin-bottom: 20px;
+        }
+
+        #start-btn {
+            background: linear-gradient(45deg, #000000, #333333);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        #start-btn:hover {
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 
@@ -637,7 +759,7 @@
     <!-- Canvas for animated chart -->
     <canvas id="chartCanvas"></canvas>
 
-    <div class="container">
+    <div class="container" style="display: none;">
         <!-- Logo -->
         <div class="logo-circle">
             <img src="./logo.png" alt="" srcset="">
@@ -745,7 +867,98 @@
         </div>
     </div>
 
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <div id="loading-number">0</div>
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div id="splash" style="display: none;">
+        <div class="logo-circle">
+            <img src="./logo.png" alt="">
+        </div>
+        <h1 class="title">$USDARK</h1>
+        <button id="start-btn">START</button>
+    </div>
+
     <script>
+        // Preloader animation
+        document.addEventListener('DOMContentLoaded', () => {
+            let progress = 0;
+            const number = document.getElementById('loading-number');
+            const fill = document.getElementById('progress-fill');
+            const preloader = document.getElementById('preloader');
+            const splash = document.getElementById('splash');
+            const container = document.querySelector('.container');
+            const startBtn = document.getElementById('start-btn');
+            const canvas = document.getElementById('chartCanvas');
+            const loader = document.querySelector('.loader');
+
+            const messages = [
+                'Unleashing darkness...',
+                'Destabilizing economy...',
+                'Summoning volatility...',
+                'Awakening the unstable...',
+                'Loading chaos...',
+                'Preparing for doom...',
+                'Igniting dark forces...',
+                'Brewing instability...',
+                'Charging dark energy...',
+                'Unlocking the void...'
+            ];
+
+            function createLoadingText() {
+                const text = document.createElement('div');
+                text.className = 'loading-text';
+                text.textContent = messages[Math.floor(Math.random() * messages.length)];
+                const x = (Math.random() - 0.5) * 600;
+                const y = (Math.random() - 0.5) * 300;
+                text.style.left = `calc(50% + ${x}px)`;
+                text.style.top = `calc(50% + ${y}px)`;
+                loader.appendChild(text);
+                setTimeout(() => {
+                    text.remove();
+                }, 3000);
+            }
+
+            const textInterval = setInterval(createLoadingText, 800);
+
+            const interval = setInterval(() => {
+                progress += 1;
+                number.textContent = progress;
+                fill.style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    clearInterval(textInterval);
+                    setTimeout(() => {
+                        preloader.style.opacity = 0;
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            // Show splash screen
+                            splash.style.display = 'flex';
+                            splash.style.opacity = 1;
+                        }, 500);
+                    }, 500);
+                }
+            }, 70); // Adjust timing for desired duration (100 steps * 70ms ≈ 7s)
+
+            // Start button click
+            startBtn.addEventListener('click', () => {
+                splash.style.opacity = 0;
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    container.style.display = 'block';
+                    canvas.style.display = 'block';
+                }, 500);
+            });
+        });
+
         // Top variables
         let agentButtonClickable = 0;
 
